@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<title>Seeler Beratungswerk – Ortsbegehung</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif; background: #f5f5f3; color: #1a1a1a; font-size: 15px; padding: 16px 16px 48px; }
+.brand { font-size: 11px; color: #999; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 4px; }
+h1 { font-size: 22px; font-weight: 500; margin-bottom: 14px; }
+.meta { display: flex; gap: 8px; margin-bottom: 14px; }
+.meta input { flex: 1; font-size: 14px; padding: 9px 12px; border: 1px solid #ddd; border-radius: 10px; background: #fff; color: #1a1a1a; -webkit-appearance: none; }
+.progress-box { background: #fff; border: 1px solid #ddd; border-radius: 12px; padding: 12px 16px; margin-bottom: 14px; display: flex; align-items: center; gap: 12px; }
+.pbar-bg { flex: 1; height: 5px; background: #e5e5e5; border-radius: 3px; }
+.pbar { height: 5px; background: #1e5fa8; border-radius: 3px; width: 0%; transition: width 0.3s; }
+.plabel { font-size: 12px; color: #666; white-space: nowrap; }
+.section { margin-bottom: 8px; background: #fff; border: 1px solid #ddd; border-radius: 14px; overflow: hidden; }
+.sec-head { display: flex; align-items: center; gap: 10px; padding: 13px 16px; cursor: pointer; user-select: none; }
+.sec-head:active { background: #f5f5f3; }
+.sec-icon { font-size: 18px; flex-shrink: 0; }
+.sec-title { font-size: 14px; font-weight: 500; flex: 1; }
+.sec-meta { font-size: 11px; color: #999; }
+.sec-chev { font-size: 13px; color: #bbb; transition: transform 0.2s; display: inline-block; }
+.sec-body { display: none; border-top: 1px solid #eee; }
+.item { border-bottom: 1px solid #f0f0f0; padding: 12px 16px; }
+.item:last-child { border-bottom: none; }
+.item-label { font-size: 14px; font-weight: 500; line-height: 1.4; margin-bottom: 9px; }
+.status-row { display: flex; gap: 6px; margin-bottom: 8px; }
+.sbtn { flex: 1; padding: 8px 2px; border: 1px solid #ddd; border-radius: 8px; font-size: 12px; font-weight: 500; background: #f5f5f3; color: #666; cursor: pointer; text-align: center; -webkit-appearance: none; transition: all 0.12s; }
+.sbtn:active { transform: scale(0.96); }
+.sbtn.ok  { background: #eaf3de; border-color: #a0c96a; color: #3b6d11; }
+.sbtn.nok { background: #fcebeb; border-color: #e24b4a; color: #a32d2d; }
+.sbtn.na  { background: #faeeda; border-color: #e09f27; color: #854f0b; }
+.tools { display: flex; gap: 14px; margin-bottom: 0; }
+.tool-btn { background: none; border: none; font-size: 12px; color: #999; cursor: pointer; display: flex; align-items: center; gap: 4px; padding: 2px 0; -webkit-appearance: none; }
+.note-wrap { display: none; margin-top: 8px; }
+.note-row { display: flex; gap: 6px; align-items: flex-start; }
+textarea.note { flex: 1; font-size: 13px; padding: 8px 10px; border: 1px solid #ddd; border-radius: 8px; background: #fafafa; color: #1a1a1a; resize: vertical; font-family: inherit; min-height: 56px; }
+.mic-btn { flex-shrink: 0; width: 40px; height: 40px; border-radius: 50%; border: 1px solid #ddd; background: #f5f5f3; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 18px; -webkit-appearance: none; }
+.mic-btn.active { background: #fcebeb; border-color: #e24b4a; animation: pulse 1s infinite; }
+@keyframes pulse { 0%,100%{transform:scale(1)}50%{transform:scale(1.08)} }
+.mic-hint { font-size: 11px; color: #e24b4a; margin-top: 4px; display: none; }
+.photos-wrap { display: none; margin-top: 8px; }
+.photo-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+.photo-thumb { position: relative; aspect-ratio: 1; border-radius: 10px; overflow: hidden; background: #f0f0ee; border: 1px solid #ddd; }
+.photo-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.photo-del { position: absolute; top: 3px; right: 3px; background: rgba(0,0,0,0.5); border: none; border-radius: 50%; width: 22px; height: 22px; color: #fff; font-size: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 0; }
+.photo-add { aspect-ratio: 1; border-radius: 10px; border: 2px dashed #ccc; background: #fafaf9; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; gap: 3px; }
+.photo-add span:first-child { font-size: 26px; color: #bbb; line-height: 1; }
+.photo-add span:last-child { font-size: 10px; color: #bbb; }
+input[type=file] { display: none; }
+.export-btn { width: 100%; margin-top: 16px; padding: 14px; background: #fff; border: 1px solid #ccc; border-radius: 14px; font-size: 14px; font-weight: 500; cursor: pointer; color: #1a1a1a; display: flex; align-items: center; justify-content: center; gap: 8px; -webkit-appearance: none; }
+.export-btn:active { background: #f5f5f3; }
+</style>
+</head>
+<body>
+
+<p class="brand">Seeler Beratungswerk</p>
+<h1>Ortsbegehung</h1>
+
+<div class="meta">
+  <input type="text" placeholder="Objekt / Adresse" id="meta-obj">
+  <input type="date" id="meta-date">
+</div>
+
+<div class="progress-box">
+  <div class="pbar-bg"><div class="pbar" id="pbar"></div></div>
+  <span class="plabel" id="plabel">0 / 0</span>
+</div>
+
+<div id="sections"></div>
+
+<button class="export-btn" onclick="doExport()">↓ Bericht exportieren</button>
+
+<script>
+const MAX_PHOTOS = 5;
+const SECS = [
+  {icon:"🏡",title:"Außenbereich / Grundstück",items:["Zustand der Wege, Zufahrten, Stellplätze","Entwässerung, Gefälle, Wasserablauf","Zäune, Tore, Geländer","Außenbeleuchtung, Bewegungsmelder","Vegetation: Wurzeldruck, Feuchtigkeitseintrag, Fassadennähe"]},
+  {icon:"🏠",title:"Dach & Dachaufbauten",items:["Dachdeckung – Schäden, Verschiebungen","Dachrinnen, Fallrohre, Laubfang, Dichtigkeit","Anschlüsse (Gauben, Kamine, Lüfter)","Dachfenster: Dichtheit, Beschläge, Verglasung","Attika, Abdichtung, Notentwässerung"]},
+  {icon:"🧱",title:"Fassade",items:["Putzrisse, Abplatzungen, Feuchtigkeit","WDVS: mechanische Schäden, Algen, Wärmebrücken","Klinker: Fugen, Ausblühungen","Fensteranschlüsse, Rollladenkästen","Sockelbereich: Feuchtigkeit, Abdichtung, Spritzwasser"]},
+  {icon:"🪟",title:"Fenster & Außentüren",items:["Dichtungen, Beschläge, Schließmechanik","Verglasung: Kratzer, Beschädigungen, Isolierglas","Rollläden, Führungsschienen, Motoren","Haustür: Dichtung, Schwelle, Schließkraft"]},
+  {icon:"🚪",title:"Innenräume",items:["Wände: Risse, Feuchtigkeit, Schimmel, lose Tapeten","Decken: Setzungen, Flecken, Durchbiegungen","Böden: Beläge, Fugen, Übergänge, Trittschall","Türen: Beschläge, Schließer, Verzug","Treppen: Stufen, Geländer, Setzstufen"]},
+  {icon:"🚿",title:"Sanitär / Bad",items:["Armaturen, Dichtheit, Druck","Abflüsse: Gerüche, Ablaufgeschwindigkeit","Silikonfugen, Fliesenfugen","WC-Spülung, Spülkasten","Lüftung (mechanisch oder Fenster)"]},
+  {icon:"🔥",title:"Heizung / Haustechnik",items:["Heizkörper: Ventile, Thermostate, Entlüftung","Fußbodenheizung: Verteiler, Durchflussmengen","Wärmeerzeuger: Sichtprüfung, Fehlermeldungen","Warmwasser: Temperatur, Zirkulation","Lüftungsanlage: Filter, Geräusche, Luftmenge"]},
+  {icon:"⚡",title:"Elektro",items:["Sicherungskasten: Beschriftung, FI-Funktion","Steckdosen, Schalter, lose Elemente","Beleuchtung, Bewegungsmelder","Rauchmelder: Funktion, Alter","Netzwerk / Router / Patchfeld"]},
+  {icon:"🏚️",title:"Keller / Technikräume",items:["Feuchtigkeit, Geruch, Schimmel","Wanddurchdringungen, Abdichtung","Pumpen, Hebeanlagen, Rückstauklappen","Lagerbereiche, Regale, Brandschutz"]},
+  {icon:"🏢",title:"Gemeinschaftsbereiche (MFH)",items:["Treppenhaus: Geländer, Beleuchtung, Brandschutz","Kellerflure: Türen, Lüftung","Müllplatz: Sauberkeit, Zugang","Fahrradraum: Schlösser, Ordnung"]}
+];
+
+const state = {};
+let total = 0;
+const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+let activeRec = null, activeMicKey = null;
+
+function build() {
+  const wrap = document.getElementById('sections');
+  SECS.forEach((sec, si) => {
+    total += sec.items.length;
+    const sd = document.createElement('div');
+    sd.className = 'section';
+    const head = document.createElement('div');
+    head.className = 'sec-head';
+    head.innerHTML = `<span class="sec-icon">${sec.icon}</span><span class="sec-title">${sec.title}</span><span class="sec-meta" id="sm${si}">0/${sec.items.length}</span><span class="sec-chev" id="sc${si}">▼</span>`;
+    const body = document.createElement('div');
+    body.className = 'sec-body';
+    body.id = 'sb' + si;
+    head.onclick = () => {
+      const open = body.style.display === 'block';
+      body.style.display = open ? 'none' : 'block';
+      document.getElementById('sc'+si).style.transform = open ? '' : 'rotate(180deg)';
+    };
+    sec.items.forEach((item, ii) => {
+      const k = si+'_'+ii;
+      state[k] = {status: null, note: '', photos: []};
+      const d = document.createElement('div');
+      d.className = 'item';
+      d.innerHTML = `
+        <div class="item-label">${item}</div>
+        <div class="status-row">
+          <button class="sbtn" id="ok${k}" onclick="setS('${k}','ok')">✓ OK</button>
+          <button class="sbtn" id="nok${k}" onclick="setS('${k}','nok')">✗ Mangel</button>
+          <button class="sbtn" id="na${k}" onclick="setS('${k}','na')">– n.a.</button>
+        </div>
+        <div class="tools">
+          <button class="tool-btn" onclick="togNote('${k}')">✏️ Notiz</button>
+          <button class="tool-btn" onclick="togPhotos('${k}')">📷 Fotos<span id="pc${k}"></span></button>
+        </div>
+        <div class="note-wrap" id="nw${k}">
+          <div class="note-row">
+            <textarea class="note" id="nt${k}" placeholder="Notiz eingeben…" oninput="state['${k}'].note=this.value"></textarea>
+            ${SR ? `<button class="mic-btn" id="mb${k}" onclick="togMic('${k}')">🎙️</button>` : ''}
+          </div>
+          ${SR ? `<div class="mic-hint" id="mh${k}">🔴 Aufnahme läuft – nochmal tippen zum Stoppen</div>` : ''}
+        </div>
+        <div class="photos-wrap" id="pw${k}">
+          <div class="photo-grid" id="pg${k}"></div>
+          <input type="file" id="fi${k}" accept="image/*" multiple onchange="addPhotos('${k}',this)">
+        </div>`;
+      body.appendChild(d);
+    });
+    sd.appendChild(head);
+    sd.appendChild(body);
+    wrap.appendChild(sd);
+  });
+  updateProg();
+  SECS.forEach((s,si) => s.items.forEach((_,ii) => renderGrid(si+'_'+ii)));
+}
+
+function setS(k, s) {
+  state[k].status = state[k].status === s ? null : s;
+  ['ok','nok','na'].forEach(x => {
+    const b = document.getElementById(x+k);
+    b.className = 'sbtn' + (state[k].status === x ? ' '+x : '');
+  });
+  const si = k.split('_')[0];
+  let done = SECS[si].items.filter((_,ii) => state[si+'_'+ii].status).length;
+  document.getElementById('sm'+si).textContent = done+'/'+SECS[si].items.length;
+  updateProg();
+}
+
+function togNote(k) {
+  const nw = document.getElementById('nw'+k);
+  nw.style.display = nw.style.display === 'block' ? 'none' : 'block';
+}
+
+function togPhotos(k) {
+  const pw = document.getElementById('pw'+k);
+  pw.style.display = pw.style.display === 'block' ? 'none' : 'block';
+}
+
+function togMic(k) {
+  if (activeMicKey === k && activeRec) { activeRec.stop(); return; }
+  if (activeRec) { activeRec.stop(); }
+  const rec = new SR();
+  rec.lang = 'de-DE';
+  rec.continuous = true;
+  rec.interimResults = true;
+  const base = state[k].note;
+  const ta = document.getElementById('nt'+k);
+  const mb = document.getElementById('mb'+k);
+  const mh = document.getElementById('mh'+k);
+  rec.onstart = () => {
+    activeRec = rec; activeMicKey = k;
+    mb.classList.add('active'); mb.textContent = '⏹️';
+    if (mh) mh.style.display = 'block';
+  };
+  rec.onresult = e => {
+    let interim='', final='';
+    for (let i=e.resultIndex;i<e.results.length;i++) {
+      if (e.results[i].isFinal) final += e.results[i][0].transcript;
+      else interim += e.results[i][0].transcript;
+    }
+    if (final) { state[k].note = (base?base+' ':'')+final; ta.value=state[k].note; }
+    else ta.value = (base?base+' ':'')+interim;
+  };
+  rec.onerror = e => {
+    stopMic(k);
+    if (e.error==='not-allowed') alert('Bitte Mikrofon-Zugriff in den Einstellungen → Safari erlauben.');
+  };
+  rec.onend = () => stopMic(k);
+  rec.start();
+}
+
+function stopMic(k) {
+  const mb = document.getElementById('mb'+k);
+  const mh = document.getElementById('mh'+k);
+  if (mb) { mb.classList.remove('active'); mb.textContent = '🎙️'; }
+  if (mh) mh.style.display = 'none';
+  activeRec = null; activeMicKey = null;
+}
+
+function addPhotos(k, inp) {
+  const rem = MAX_PHOTOS - state[k].photos.length;
+  Array.from(inp.files).slice(0, rem).forEach(f => {
+    const r = new FileReader();
+    r.onload = e => { state[k].photos.push(e.target.result); renderGrid(k); };
+    r.readAsDataURL(f);
+  });
+  inp.value = '';
+}
+
+function renderGrid(k) {
+  const g = document.getElementById('pg'+k);
+  g.innerHTML = '';
+  state[k].photos.forEach((src, pi) => {
+    const t = document.createElement('div');
+    t.className = 'photo-thumb';
+    t.innerHTML = `<img src="${src}"><button class="photo-del" onclick="delPhoto('${k}',${pi})">✕</button>`;
+    g.appendChild(t);
+  });
+  if (state[k].photos.length < MAX_PHOTOS) {
+    const a = document.createElement('div');
+    a.className = 'photo-add';
+    a.innerHTML = '<span>+</span><span>Foto</span>';
+    a.onclick = () => document.getElementById('fi'+k).click();
+    g.appendChild(a);
+  }
+  const c = state[k].photos.length;
+  document.getElementById('pc'+k).textContent = c ? ` (${c})` : '';
+}
+
+function delPhoto(k, pi) { state[k].photos.splice(pi,1); renderGrid(k); }
+
+function updateProg() {
+  const done = Object.values(state).filter(s=>s.status).length;
+  const pct = total ? Math.round(done/total*100) : 0;
+  document.getElementById('pbar').style.width = pct+'%';
+  document.getElementById('plabel').textContent = done+' / '+total;
+}
+
+function doExport() {
+  const obj = document.getElementById('meta-obj').value || 'Objekt unbekannt';
+  const date = document.getElementById('meta-date').value || new Date().toLocaleDateString('de-DE');
+  let lines = ['BEGEHUNGSPROTOKOLL – Seeler Beratungswerk', 'Objekt: '+obj, 'Datum: '+date, ''];
+  SECS.forEach((sec,si) => {
+    lines.push('== '+sec.title.toUpperCase()+' ==');
+    sec.items.forEach((item,ii) => {
+      const s = state[si+'_'+ii];
+      const st = s.status==='ok'?'✓ OK':s.status==='nok'?'✗ MANGEL':s.status==='na'?'– n.a.':'○ offen';
+      lines.push('  '+st+'  '+item);
+      if (s.note) lines.push('         Notiz: '+s.note);
+      if (s.photos.length) lines.push('         Fotos: '+s.photos.length+' Foto(s)');
+    });
+    lines.push('');
+  });
+  const blob = new Blob([lines.join('\n')], {type:'text/plain'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'Begehung_'+obj.replace(/\s/g,'_')+'_'+date+'.txt';
+  a.click();
+}
+
+build();
+</script>
+</body>
+</html>
