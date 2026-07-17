@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>Seeler Beratungswerk – Ortsbegehung</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif; background: #f5f5f3; color: #1a1a1a; font-size: 15px; padding: 16px; }
+
+h1 { font-size: 22px; font-weight: 500; margin-bottom: 2px; }
+.brand { font-size: 11px; color: #999; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 4px; }
+
+.meta { display: flex; gap: 8px; margin: 14px 0; }
+.meta input { flex: 1; font-size: 14px; padding: 9px 12px; border: 1px solid #ddd; border-radius: 10px; background: #fff; color: #1a1a1a; -webkit-appearance: none; }
+
+/* Accordion via checkbox hack */
+.section { margin-bottom: 8px; background: #fff; border: 1px solid #ddd; border-radius: 14px; overflow: hidden; }
+.section input[type=checkbox] { display: none; }
+.sec-header { display: flex; align-items: center; gap: 10px; padding: 14px 16px; cursor: pointer; user-select: none; }
+.sec-icon { font-size: 18px; flex-shrink: 0; }
+.sec-title { font-size: 14px; font-weight: 500; flex: 1; }
+.sec-arrow { font-size: 12px; color: #bbb; transition: transform 0.2s; }
+.sec-toggle:checked ~ .sec-header .sec-arrow { transform: rotate(180deg); }
+.sec-items { display: none; border-top: 1px solid #eee; }
+.sec-toggle:checked ~ .sec-items { display: block; }
+
+.item { border-bottom: 1px solid #f0f0f0; padding: 12px 16px; }
+.item:last-child { border-bottom: none; }
+.item-label { font-size: 14px; line-height: 1.4; margin-bottom: 10px; font-weight: 500; }
+
+/* Status radio buttons */
+.status-row { display: flex; gap: 6px; margin-bottom: 8px; }
+.status-row input[type=radio] { display: none; }
+.status-row label { flex: 1; text-align: center; padding: 8px 4px; border: 1px solid #ddd; border-radius: 8px; font-size: 12px; font-weight: 500; background: #f5f5f3; color: #666; cursor: pointer; transition: all 0.15s; }
+.status-row input[value=ok]:checked + label { background: #eaf3de; border-color: #a0c96a; color: #3b6d11; }
+.status-row input[value=mangel]:checked + label { background: #fcebeb; border-color: #e24b4a; color: #a32d2d; }
+.status-row input[value=na]:checked + label { background: #faeeda; border-color: #e09f27; color: #854f0b; }
+
+/* Note */
+.note { width: 100%; margin-top: 6px; font-size: 13px; padding: 8px 10px; border: 1px solid #ddd; border-radius: 8px; background: #fafafa; color: #1a1a1a; resize: vertical; font-family: inherit; min-height: 52px; }
+
+.export-hint { margin-top: 24px; padding: 14px 16px; background: #fff; border: 1px solid #ddd; border-radius: 14px; font-size: 13px; color: #666; text-align: center; line-height: 1.6; }
+.export-hint strong { color: #1a1a1a; }
+
+.footer { margin-top: 12px; font-size: 11px; color: #bbb; text-align: center; padding-bottom: 32px; }
+</style>
+</head>
+<body>
+
+<p class="brand">Seeler Beratungswerk</p>
+<h1>Ortsbegehung</h1>
+
+<div class="meta">
+  <input type="text" placeholder="Objekt / Adresse" />
+  <input type="date" />
+</div>
+
+<!-- 1 Außenbereich -->
+<div class="section">
+  <input type="checkbox" id="s1" class="sec-toggle">
+  <label for="s1" class="sec-header">
+    <span class="sec-icon">🏡</span>
+    <span class="sec-title">Außenbereich / Grundstück</span>
+    <span class="sec-arrow">▼</span>
+  </label>
+  <div class="sec-items">
+    <div class="item"><div class="item-label">Zustand der Wege, Zufahrten, Stellplätze</div><div class="status-row"><input type="radio" name="i1_1" value="ok" id="i1_1ok"><label for="i1_1ok">✓ OK</label><input type="radio" name="i1_1" value="mangel" id="i1_1m"><label for="i1_1m">✗ Mangel</label><input type="radio" name="i1_1" value="na" id="i1_1na"><label for="i1_1na">– n.a.</label></div><textarea class="note" placeholder="Notiz…"></textarea></div>
+    <div class="item"><div class="item-label">Entwässerung, Gefälle, Wasserablauf</div><div class="status-row"><input type="radio" name="i1_2" value="ok" id="i1_2ok"><label for="i1_2ok">✓ OK</label><input type="radio" name="i1_2" value="mangel" id="i1_2m"><label for="i1_2m">✗ Mangel</label><input type="radio" name="i1_2" value="na" id="i1_2na"><label for="i1_2na">– n.a.</label></div><textarea class="note" placeholder="Notiz…"></textarea></div>
+    <div class="item"><div class="item-label">Zäune, Tore, Geländer</div><div class="status-row"><input type="radio" name="i1_3" value="ok" id="i1_3ok"><label for="i1_3ok">✓ OK</label><input type="radio" name="i1_3" value="mangel" id="i1_3m"><label for="i1_3m">✗ Mangel</label><input type="radio" name="i1_3" value="na" id="i1_3na"><label for="i1_3na">– n.a.</label></div><textarea class="note" placeholder="Notiz…"></textarea></div>
+    <div class="item"><div class="item-label">Außenbeleuchtung, Bewegungsmelder</div><div class="status-row"><input type="radio" name="i1_4" value="ok" id="i1_4ok"><label for="i1_4ok">✓ OK</label><input type="radio" name="i1_4" value="mangel" id="i1_4m"><label for="i1_4m">✗ Mangel</label><input type="radio" name="i1_4" value="na" id="i1_4na"><label for="i1_4na">– n.a.</label></div><textarea class="note" placeholder="Notiz…"></textarea></div>
+    <div class="item"><div class="item-label">Vegetation: Wurzeldruck, Feuchtigkeitseintrag, Fassadennähe</div><div class="status-row"><input type="radio" name="i1_5" value="ok" id="i1_5ok"><label for="i1_5ok">✓ OK</label><input type="radio" name="i1_5" value="mangel" id="i1_5m"><label for="i1_5m">✗ Mangel</label><input type="radio" name="i1_5" value="na" id="i1_5na"><label for="i1_5na">– n.a.</label></div><textarea class="note" placeholder="Notiz…"></textarea></div>
+  </div>
+</div>
+
+<!-- 2 Dach -->
+<div class="section">
+  <input type="checkbox" id="s2" class="sec-toggle">
+  <label for="s2" class="sec-header">
+    <span class="sec-icon">🏠</span>
+    <span class="sec-title">Dach & Dachaufbauten</span>
+    <span class="sec-arrow">▼</span>
+  </label>
+  <div class="sec-items">
+    <div class="item"><div class="item-label">Dachdeckung – Schäden, Verschiebungen</div><div class="status-row"><input type="radio" name="i2_1" value="ok" id="i2_1ok"><label for="i2_1ok">✓ OK</label><input type="radio" name="i2_1" value="mangel" id="i2_1m"><label for="i2_1m">✗ Mangel</label><input type="radio" name="i2_1" value="na" id="i2_1na"><label for="i2_1na">– n.a.</label></div><textarea class="note" placeholder="Notiz…"></textarea></div>
+    <div class="item"><div class="item-label">Dachrinnen, Fallrohre, Laubfang, Dichtigkeit</div><div class="status-row"><input type="radio" name="i2_2" value="ok" id="i2_2ok"><label for="i2_2ok">✓ OK</label><input type="radio" name="i2_2" value="mangel" id="i2_2m"><label for="i2_2m">✗ Mangel</label><input type="radio" name="i2_2" value="na" id="i2_2na"><label for="i2_2na">– n.a.</label></div><textarea class="note" placeholder="Notiz…"></textarea></div>
+    <div class="item"><div class="item-label">Anschlüsse (Gauben, Kamine, Lüfter)</div><div class="status-row"><input type="radio" name="i2_3" value="ok" id="i2_3ok"><label for="i2_3ok">✓ OK</label><input type="radio" name="i2_3" value="mangel" id="i2_3m"><label for="i2_3m">✗ Mangel</label><input type="radio" name="i2_3" value="na" id="i2_3na"><label for="i2_3na">– n.a.</label></div><textarea class="note" placeholder="Notiz…"></textarea></div>
+    <div class="item"><div class="item-label">Dachfenster: Dichtheit, Beschläge, Verglasung</div><div class="status-row"><input type="radio" name="i2_4" value="ok" id="i2_4ok"><label for="i2_4ok">✓ OK</label><input type="radio" name="i2_4" value="mangel" id="i2_4m"><label for="i2_4m">✗ Mangel</label><input type="radio" name="i2_4" value="na" id="i2_4na"><label for="i2_4na">– n.a.</label></div><textarea class="note" placeholder="Notiz…"></textarea></div>
+    <div class="item"><div class="item-label">Attika, Abdichtung, Notentwässerung</div><div class="status-row"><input type="radio" name="i2_5" value="ok" id="i2_5ok"><label for="i2_5ok">✓ OK</label><input type="radio" name="i2_5" value="mangel" id="i2_5m"><label for="i2_5m">✗ Mangel</label><input type="radio" name="i2_5" value="na" id="i2_5na"><label for="i2_5na">– n.a.</label></div><textarea class="note" placeholder="Notiz…"></textarea></div>
+  </div>
+</div>
+
+<!-- 3 Fassade -->
+<div class="section">
+  <input type="checkbox" id="s3" class="sec-toggle">
+  <label for="s3" class="sec-header">
+    <span class="sec-icon">🧱</span>
+    <span class="sec-title">Fassade</span>
+    <span class="sec-arrow">▼</span>
+  </label>
+  <div class="sec-items">
+    <div class="item"><div class="item-label">Putzrisse, Abplatzungen, Feuchtigkeit</div><div class="status-row"><input type="radio" name="i3_1" value="ok" id="i3_1ok"><label for="i3_1ok">✓ OK</label><input type="radio" name="i3_1" value="mangel" id="i3_1m"><label for="i3_1m">✗ Mangel</label><input type="radio" name="i3_1" value="na" id="i3_1na"><label for="i3_1na">– n.a.</label></div><textarea class="note" placeholder="Notiz…"></textarea></div>
+    <div class="item"><div class="item-label">WDVS: mechanische Schäden, Algen, Wärmebrücken</div><div class="status-row"><input type="radio" name="i3_2" value="ok" id="i3_2ok"><label for="i3_2ok">✓ OK</label><input type="radio" name="i3_2" value="mangel" id="i3_2m"><label for="i3_2m">✗ Mangel</label><input type="radio" name="i3_2" value="na" id="i3_2na"><label for="i3_2na">– n.a.</label></div><textarea class="note" placeholder="Notiz…"></textarea></div>
+    <div class="item"><div class="item-label">Klinker: Fugen, Ausblühungen</div><div class="status-row"><input type="radio" name="i3_3" value="ok" id="i3_3ok"><label for="i3_3ok">✓ OK</label><input type="radio" name="i3_3" value="mangel" id="i3_3m"><label for="i3_3m">✗ Mangel</label><input type="radio" name="i3_3" value="na" id="i3_3na"><label for="i3_3na">– n.a.</label></div><textarea class="note" placeholder="Notiz…"></textarea></div>
+    <div class="item"><div class="item-label">Fensteranschlüsse, Rollladenkästen</div><div class="status-row"><input type="radio" name="i3_4" value="ok" id="i3_4ok"><label for="i3_4ok">✓ OK</label><input type="radio" name="i3_4" value="mangel" id="i3_4m"><label for="i3_4m">✗ Mangel</label><input type="radio" name="i3_4" value="na" id="i3_4na"><label for="i3_4na">– n.a.</label></div><textarea class="note" placeholder="Notiz…"></textarea></div>
+    <div class="item"><div class="item-label">Sockelbereich: Feuchtigkeit, Abdichtung, Spritzwasser</div><div class="status-row"><input type="radio" name="i3_5" value="ok" id="i3_5ok"><label for="i3_5ok">✓ OK</label><input type="radio" name="i3_5" value="mangel" id="i3_5m"><label for="i3_5m">✗ Mangel</label><input type="radio" name="i3_5" value="na" id="i3_5na"><label for="i3_5na">– n.a.</label></div><textarea class="note" placeholder="Notiz…"></textarea></div>
+  </div>
+</div>
+
+<!-- 4 Fenster -->
+<div class="section">
+  <input type="checkbox" id="s4" class="sec-toggle">
+  <label for="s4" class="sec-header">
+    <span class="sec-icon">🪟</span>
+    <span class="sec-title">Fenster & Außentüren</span>
+    <span class="sec-arrow">▼</span>
+  </label>
+  <div class="sec-items">
+    <div class="item"><div class="item-label">Dichtungen, Beschläge, Schließmechanik</div><div class="status-row"><input type="radio" name="i4_1" value="ok" id="i4_1ok"><label for="i4_1ok">✓ OK</label><input type="radio" name="i4_1" value="mangel" id="i4_1m"><label for="i4_1m">✗ Mangel</label><input type="radio" name="i4_1" value="na" id="i4_1na"><label for="i4_1na">– n.a.</label></div><textarea class="note" placeholder="Notiz…"></textarea></div>
+    <div class="item"><div class="item-label">Verglasung: Kratzer, Beschädigungen, Isolierglas</div><div class="status-row"><input type="radio" name="i4_2" value="ok" id="i4_2ok"><label for="i4_2ok">✓ OK</label><input type="radio" name="i4_2" value="mangel" id="i4_2m"><label for="i4_2m">✗ Mangel</label><input type="radio" name="i4_2" value="na" id="i4_2na"><label for="i4_2na">– n.a.</label></div><textarea class="note" placeholder="Notiz…"></textarea></div>
+    <div class="item"><div class="item-label">Rollläden, Führungsschienen, Motoren</div><div class="status-row"><input type="radio" name="i4_3" value="ok" id="i4_3ok"><label for="i4_3ok">✓ OK</label><input type="radio" name="i4_3" value="mangel" id="i4_3m"><label for="i4_3m">✗ Mangel</label><input type="radio" name="i4_3" value="na" id="i4_3na"><label for="i4_3na">– n.a.</label></div><textarea class="note" placeholder="Notiz…"></textarea></div>
+    <div class="item"><div class="item-label">Haustür: Dichtung, Schwelle, Schließkraft</div><div class="status-row"><input type="radio" name="i4_4" value="ok" id="i4_4ok"><label for="i4_4ok">✓ OK</label><input type="radio" name="i4_4" value="mangel" id="i4_4m"><label for="i4_4m">✗ Mangel</label><input type="radio" name="i4_4" value="na" id="i4_4na"><label for="i4_4na">– n.a.</label></div><textarea class="note" placeholder="Notiz…"></textarea></div>
+  </div>
+</div>
+
+<!-- 5 Innenräume -->
+<div class="section">
+  <input type="checkbox" id="s5" class="sec-toggle">
+  <label for="s5" class="sec-header">
+    <span class="sec-icon">🚪</span>
+    <span class="sec-title">Innenräume</span>
+    <span class="sec-arrow">▼</span>
+  </label>
+  <div class="sec-items">
+    <div class="item"><div class="item-label">Wände: Risse, Feuchtigkeit, Schimmel, lose Tapeten</div><div class="status-row"><input type="radio" name="i5_1" value="ok" id="i5_1ok"><label for="i5_1ok">✓ OK</label><input type="radio" name="i5_1" value="mangel" id="i5_1m"><label for="i5_1m">✗ Mangel</label><input type="radio" name="i5_1" value="na" id="i5_1na"><label for="i5_1na">– n.a.</label></div><textarea class="note" placeholder="Notiz…"></textarea></div>
+    <div class="item"><div class="item-label">Decken: Setzungen, Flecken, Durchbiegungen</div><div class="status-row"><input type="radio" name="i5_2" value="ok" id="i5_2ok"><label for="i5_2ok">✓ OK</label><input type="radio" name="i5_2" value="mangel" id="i5_2m"><label for="i5_2m">✗ Mangel</label><input type="radio" name="i5_2" value="na" id="i5_2na"><label for="i5_2na">– n.a.</label></div><textarea class="note" placeholder="Notiz…"></textarea></div>
+    <div class="item"><div class="item-label">Böden: Beläge, Fugen, Übergänge, Trittschall</div><div class="status-row"><input type="radio" name="i5_3" value="ok" id="i5_3ok"><label for="i5_3ok">✓ OK</label><input type="radio" name="i5_3" value="mangel" id="i5_3m"><label for="i5_3m">✗ Mangel</label><input type="radio" name="i5_3" value="na" id="i5_3na"><label for="i5_3na">– n.a.</label></div><textarea class="note" placeholder="Notiz…"></textarea></div>
+    <div class="item"><div class="item-label">Türen: Beschläge, Schließer, Verzug</div><div class="status-row"><input type="radio" name="i5_4" value="ok" id="i5_4ok"><label for="i5_4ok">✓ OK</label><input type="radio" name="i5_4" value="mangel" id="i5_4m"><label for="i5_4m">✗ Mangel</label><input type="radio" name="i5_4" value="na" id="i5_4na"><label for="i5_4na">– n.a.</label></div><textarea class="note" placeholder="Notiz…"></textarea></div>
+    <div class="item"><div class="item-label">Treppen: Stufen, Geländer, Setzstufen</div><div class="status-row"><input type="radio" name="i5_5" value="ok" id="i5_5ok"><label for="i5_5ok">✓ OK</label><input type="radio" name="i5_5" value="mangel" id="i5_5m"><label for="i5_5m">✗ Mangel</label><input type="radio" name="i5_5" value="na" id="i5_5na"><label for="i5_5na">– n.a.</label></div><textarea class="note" placeholder="Notiz…"></textarea></div>
+  </div>
+</div>
+
+<!-- 6 Sanitär -->
+<div class="section">
+  <input type="checkbox" id="s6" class="sec-toggle">
+  <label for="s6" class="sec-header">
+    <span class="sec-icon">🚿</span>
+    <span class="sec-title">Sanitär / Bad</span>
+    <span class="sec-arrow">▼</span>
+  </label>
+  <div class="sec-items">
+    <div class="item"><div class="item-label">Armaturen, Dichtheit, Druck</div><div class="status-row"><input type="radio" name="i6_1" value="ok" id="i6_1ok"><label for="i6_1ok">✓ OK</label><input type="radio" name="i6_1" value="mangel" id="i6_1m"><label for="i6_1m">✗ Mangel</label><input type="radio" name="i6_1" value="na" id="i6_1na"><label for="i6_1na">– n.a.</label></div><textarea class="note" placeholder="Notiz…"></textarea></div>
+    <div class="item"><div class="item-label">Abflüsse: Gerüche, Ablaufgeschwindigkeit</div><div class="status-row"><input type="radio" name="i6_2" value="ok" id="i6_2ok"><label for="i6_2ok">✓ OK</label><input type="radio" name="i6_2" value="mangel" id="i6_2m"><label for="i6_2m">✗ Mangel</label><input type="radio" name="i6_2" value="na" id="i6_2na"><label for="i6_2na">– n.a.</label></div><textarea class="note" placeholder="Notiz…"></textarea></div>
+    <div class="item"><div class="item-label">Silikonfugen, Fliesenfugen</div><div class="status-row"><input type="radio" name="i6_3" value="ok" id="i6_3ok"><label for="i6_3ok">✓ OK</label><input type="radio" name="i6_3" value="mangel" id="i6_3m"><label for="i6_3m">✗ Mangel</label><input type="radio" name="i6_3" value="na" id="i6_3na"><label for="i6_3na">– n.a.</label></div><textarea class="note" placeholder="Notiz…"></textarea></div>
+    <div class="item"><div class="item-label">WC-Spülung, Spülkasten</div><div class="status-row"><input type="radio" name="i6_4" value="ok" id="i6_4ok"><label for="i6_4ok">✓ OK</label><input type="radio" name="i6_4" value="mangel" id="i6_4m"><label for="i6_4m">✗ Mangel</label><input type="radio" name="i6_4" value="na" id="i6_4na"><label for="i6_4na">– n.a.</label></div><textarea class="note" placeholder="Notiz…"></textarea></div>
+    <div class="item"><div class="item-label">Lüftung (mechanisch oder Fenster)</div><div class="status-row"><input type="radio" name="i6_5" value="ok" id="i6_5ok"><label for="i6_5ok">✓ OK</label><input type="radio" name="i6_5" value="mangel" id="i6_5m"><label for="i6_5m">✗ Mangel</label><input type="radio" name="i6_5" value="na" id="i6_5na"><label for="i6_5na">– n.a.</label></div><textarea class="note" placeholder="Notiz…"></textarea></div>
+  </div>
+</div>
+
+<!-- 7 Heizung -->
+<div class="section">
+  <input type="checkbox" id="s7" class="sec-toggle">
+  <label for="s7" class="sec-header">
+    <span class="sec-icon">🔥</span>
+    <span class="sec-title">Heizung / Haustechnik</span>
+    <span class="sec-arrow">▼</span>
+  </label>
+  <div class="sec-items">
+    <div class="item"><div class="item-label">Heizkörper: Ventile, Thermostate, Entlüftung</div><div class="status-row"><input type="radio" name="i7_1" value="ok" id="i7_1ok"><label for="i7_1ok">✓ OK</label><input type="radio" name="i7_1" value="mangel" id="i7_1m"><label for="i7_1m">✗ Mangel</label><input type="radio" name="i7_1" value="na" id="i7_1na"><label for="i7_1na">– n.a.</label></div><textarea class="note" placeholder="Notiz…"></textarea></div>
+    <div class="item"><div class="item-label">Fußbodenheizung: Verteiler, Durchflussmengen</div><div class="status-row"><input type="radio" name="i7_2" value="ok" id="i7_2ok"><label for="i7_2ok">✓ OK</label><input type="radio" name="i7_2" value="mangel" id="i7_2m"><label for="i7_2m">✗ Mangel</label><input type="radio" name="i7_2" value="na" id="i7_2na"><label for="i7_2na">– n.a.</label></div><textarea class="note" placeholder="Notiz…"></textarea></div>
+    <div class="item"><div class="item-label">Wärmeerzeuger: Sichtprüfung, Fehlermeldungen</div><div class="status-row"><input type="radio" name="i7_3" value="ok" id="i7_3ok"><label for="i7_3ok">✓ OK</label><input type="radio" name="i7_3" value="mangel" id="i7_3m"><label for="i7_3m">✗ Mangel</label><input type="radio" name="i7_3" value="na" id="i7_3na"><label for="i7_3na">– n.a.</label></div><textarea class="note" placeholder="Notiz…"></textarea></div>
+    <div class="item"><div class="item-label">Warmwasser: Temperatur, Zirkulation</div><div class="status-row"><input type="radio" name="i7_4" value="ok" id="i7_4ok"><label for="i7_4ok">✓ OK</label><input type="radio" name="i7_4" value="mangel" id="i7_4m"><label for="i7_4m">✗ Mangel</label><input type="radio" name="i7_4" value="na" id="i7_4na"><label for="i7_4na">– n.a.</label></div><textarea class="note" placeholder="Notiz…"></textarea></div>
+    <div class="item"><div class="item-label">Lüftungsanlage: Filter, Geräusche, Luftmenge</div><div class="status-row"><input type="radio" name="i7_5" value="ok" id="i7_5ok"><label for="i7_5ok">✓ OK</label><input type="radio" name="i7_5" value="mangel" id="i7_5m"><label for="i7_5m">✗ Mangel</label><input type="radio" name="i7_5" value="na" id="i7_5na"><label for="i7_5na">– n.a.</label></div><textarea class="note" placeholder="Notiz…"></textarea></div>
+  </div>
+</div>
+
+<!-- 8 Elektro -->
+<div class="section">
+  <input type="checkbox" id="s8" class="sec-toggle">
+  <label for="s8" class="sec-header">
+    <span class="sec-icon">⚡</span>
+    <span class="sec-title">Elektro</span>
+    <span class="sec-arrow">▼</span>
+  </label>
+  <div class="sec-items">
+    <div class="item"><div class="item-label">Sicherungskasten: Beschriftung, FI-Funktion</div><div class="status-row"><input type="radio" name="i8_1" value="ok" id="i8_1ok"><label for="i8_1ok">✓ OK</label><input type="radio" name="i8_1" value="mangel" id="i8_1m"><label for="i8_1m">✗ Mangel</label><input type="radio" name="i8_1" value="na" id="i8_1na"><label for="i8_1na">– n.a.</label></div><textarea class="note" placeholder="Notiz…"></textarea></div>
+    <div class="item"><div class="item-label">Steckdosen, Schalter, lose Elemente</div><div class="status-row"><input type="radio" name="i8_2" value="ok" id="i8_2ok"><label for="i8_2ok">✓ OK</label><input type="radio" name="i8_2" value="mangel" id="i8_2m"><label for="i8_2m">✗ Mangel</label><input type="radio" name="i8_2" value="na" id="i8_2na"><label for="i8_2na">– n.a.</label></div><textarea class="note" placeholder="Notiz…"></textarea></div>
+    <div class="item"><div class="item-label">Beleuchtung, Bewegungsmelder</div><div class="status-row"><input type="radio" name="i8_3" value="ok" id="i8_3ok"><label for="i8_3ok">✓ OK</label><input type="radio" name="i8_3" value="mangel" id="i8_3m"><label for="i8_3m">✗ Mangel</label><input type="radio" name="i8_3" value="na" id="i8_3na"><label for="i8_3na">– n.a.</label></div><textarea class="note" placeholder="Notiz…"></textarea></div>
+    <div class="item"><div class="item-label">Rauchmelder: Funktion, Alter</div><div class="status-row"><input type="radio" name="i8_4" value="ok" id="i8_4ok"><label for="i8_4ok">✓ OK</label><input type="radio" name="i8_4" value="mangel" id="i8_4m"><label for="i8_4m">✗ Mangel</label><input type="radio" name="i8_4" value="na" id="i8_4na"><label for="i8_4na">– n.a.</label></div><textarea class="note" placeholder="Notiz…"></textarea></div>
+    <div class="item"><div class="item-label">Netzwerk / Router / Patchfeld</div><div class="status-row"><input type="radio" name="i8_5" value="ok" id="i8_5ok"><label for="i8_5ok">✓ OK</label><input type="radio" name="i8_5" value="mangel" id="i8_5m"><label for="i8_5m">✗ Mangel</label><input type="radio" name="i8_5" value="na" id="i8_5na"><label for="i8_5na">– n.a.</label></div><textarea class="note" placeholder="Notiz…"></textarea></div>
+  </div>
+</div>
+
+<!-- 9 Keller -->
+<div class="section">
+  <input type="checkbox" id="s9" class="sec-toggle">
+  <label for="s9" class="sec-header">
+    <span class="sec-icon">🏚️</span>
+    <span class="sec-title">Keller / Technikräume</span>
+    <span class="sec-arrow">▼</span>
+  </label>
+  <div class="sec-items">
+    <div class="item"><div class="item-label">Feuchtigkeit, Geruch, Schimmel</div><div class="status-row"><input type="radio" name="i9_1" value="ok" id="i9_1ok"><label for="i9_1ok">✓ OK</label><input type="radio" name="i9_1" value="mangel" id="i9_1m"><label for="i9_1m">✗ Mangel</label><input type="radio" name="i9_1" value="na" id="i9_1na"><label for="i9_1na">– n.a.</label></div><textarea class="note" placeholder="Notiz…"></textarea></div>
+    <div class="item"><div class="item-label">Wanddurchdringungen, Abdichtung</div><div class="status-row"><input type="radio" name="i9_2" value="ok" id="i9_2ok"><label for="i9_2ok">✓ OK</label><input type="radio" name="i9_2" value="mangel" id="i9_2m"><label for="i9_2m">✗ Mangel</label><input type="radio" name="i9_2" value="na" id="i9_2na"><label for="i9_2na">– n.a.</label></div><textarea class="note" placeholder="Notiz…"></textarea></div>
+    <div class="item"><div class="item-label">Pumpen, Hebeanlagen, Rückstauklappen</div><div class="status-row"><input type="radio" name="i9_3" value="ok" id="i9_3ok"><label for="i9_3ok">✓ OK</label><input type="radio" name="i9_3" value="mangel" id="i9_3m"><label for="i9_3m">✗ Mangel</label><input type="radio" name="i9_3" value="na" id="i9_3na"><label for="i9_3na">– n.a.</label></div><textarea class="note" placeholder="Notiz…"></textarea></div>
+    <div class="item"><div class="item-label">Lagerbereiche, Regale, Brandschutz</div><div class="status-row"><input type="radio" name="i9_4" value="ok" id="i9_4ok"><label for="i9_4ok">✓ OK</label><input type="radio" name="i9_4" value="mangel" id="i9_4m"><label for="i9_4m">✗ Mangel</label><input type="radio" name="i9_4" value="na" id="i9_4na"><label for="i9_4na">– n.a.</label></div><textarea class="note" placeholder="Notiz…"></textarea></div>
+  </div>
+</div>
+
+<!-- 10 Gemeinschaft -->
+<div class="section">
+  <input type="checkbox" id="s10" class="sec-toggle">
+  <label for="s10" class="sec-header">
+    <span class="sec-icon">🏢</span>
+    <span class="sec-title">Gemeinschaftsbereiche (MFH)</span>
+    <span class="sec-arrow">▼</span>
+  </label>
+  <div class="sec-items">
+    <div class="item"><div class="item-label">Treppenhaus: Geländer, Beleuchtung, Brandschutz</div><div class="status-row"><input type="radio" name="i10_1" value="ok" id="i10_1ok"><label for="i10_1ok">✓ OK</label><input type="radio" name="i10_1" value="mangel" id="i10_1m"><label for="i10_1m">✗ Mangel</label><input type="radio" name="i10_1" value="na" id="i10_1na"><label for="i10_1na">– n.a.</label></div><textarea class="note" placeholder="Notiz…"></textarea></div>
+    <div class="item"><div class="item-label">Kellerflure: Türen, Lüftung</div><div class="status-row"><input type="radio" name="i10_2" value="ok" id="i10_2ok"><label for="i10_2ok">✓ OK</label><input type="radio" name="i10_2" value="mangel" id="i10_2m"><label for="i10_2m">✗ Mangel</label><input type="radio" name="i10_2" value="na" id="i10_2na"><label for="i10_2na">– n.a.</label></div><textarea class="note" placeholder="Notiz…"></textarea></div>
+    <div class="item"><div class="item-label">Müllplatz: Sauberkeit, Zugang</div><div class="status-row"><input type="radio" name="i10_3" value="ok" id="i10_3ok"><label for="i10_3ok">✓ OK</label><input type="radio" name="i10_3" value="mangel" id="i10_3m"><label for="i10_3m">✗ Mangel</label><input type="radio" name="i10_3" value="na" id="i10_3na"><label for="i10_3na">– n.a.</label></div><textarea class="note" placeholder="Notiz…"></textarea></div>
+    <div class="item"><div class="item-label">Fahrradraum: Schlösser, Ordnung</div><div class="status-row"><input type="radio" name="i10_4" value="ok" id="i10_4ok"><label for="i10_4ok">✓ OK</label><input type="radio" name="i10_4" value="mangel" id="i10_4m"><label for="i10_4m">✗ Mangel</label><input type="radio" name="i10_4" value="na" id="i10_4na"><label for="i10_4na">– n.a.</label></div><textarea class="note" placeholder="Notiz…"></textarea></div>
+  </div>
+</div>
+
+<div class="export-hint">
+  📋 <strong>Bericht erstellen:</strong> Nach der Begehung in Safari auf<br>
+  <strong>Teilen → Als PDF sichern</strong> – fertig!
+</div>
+
+<p class="footer">Seeler Beratungswerk · Ortsbegehung</p>
+
+</body>
+</html>
